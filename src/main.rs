@@ -1,9 +1,14 @@
 #[macro_use] extern crate rocket;
 
-use serde::{Serialize, Deserialize};
+use std::error::Error;
+use std::string::ParseError;
+use serde::*;
 use chrono::prelude::*;
+use chrono::ParseResult;
+use chrono::offset::LocalResult;
 use ics::properties::{Categories, Description, DtEnd, DtStart, Location, Organizer, Status, Summary};
 use ics::{escape_text, Event, ICalendar};
+use serde::de::{self, Deserialize, Deserializer};
 
 #[get("/")]
 fn index() -> &'static str {
@@ -27,6 +32,16 @@ fn format_datetime(dt: DateTime<Utc>) -> String {
 fn can_generate_dtstamp() {
     let dt: DateTime<Utc> = Utc.ymd(2022, 1, 2).and_hms(3, 4, 5);
     assert_eq!(format_datetime(dt), "20220102T030405Z");
+}
+
+fn parse_dtstamp(dt: &str) -> ParseResult<DateTime<Utc>> {
+    DateTime::parse_from_str(dt, "%Y%m%dT%H%M%SZ")
+        .map(|dt| dt.with_timezone(&Utc))
+}
+
+fn can_parse_dtstamp() {
+    let dt: DateTime<Utc> = Utc.ymd(2022, 1, 2).and_hms(3, 4, 5);
+    assert_eq!(parse_dtstamp("20220102T030405Z"), Ok(dt));
 }
 
 fn make_event<'a>(uid: &'a str, description: &'a str, start: DateTime<Utc>, end: DateTime<Utc>, location: Option<&'a str>) -> Event<'a> {
@@ -59,6 +74,7 @@ fn can_generate_calendar() {
 }
 
 #[tokio::test]
+#[ignore]
 async fn can_fetch_team_calendar() {
 
     let team_id = 22235414;
@@ -75,22 +91,35 @@ async fn can_fetch_team_calendar() {
     assert!(true)
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 struct TeamCalendarResponse {
     data: TeamCalendarmResponseData,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 struct TeamCalendarmResponseData {
     #[serde(rename = "teamCalendar")]
     team_calendar: Vec<MatchDetail>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+fn datetime_from_rbfa_date_str<'de, D: Deserializer<'de>>(d: D) -> Result<DateTime<Utc>, D::Error>  {
+
+    let result = String::deserialize(d)
+        .and_then(|s| NaiveDateTime::parse_from_str(&s, "%Y-%m-%dT%H:%M:%S").map_err(|err| de::Error::custom(err.to_string())))
+        .and_then(|ndt| match Utc.from_local_datetime(&ndt) {
+            LocalResult::None => Err(de::Error::custom("Could not parse date")),
+            LocalResult::Single(dt) => Ok(dt),
+            LocalResult::Ambiguous(dt1, dt2) => Err(de::Error::custom("Ambiguous local time, ranging from {:?} to {:?}"))
+        });
+
+    result
+}
+
+#[derive(Deserialize, Debug)]
 struct MatchDetail {
     id: String,
-    #[serde(rename = "startDate")]
-    start_date: String,
+    #[serde(rename = "startDate", deserialize_with = "datetime_from_rbfa_date_str")]
+    start_date: DateTime<Utc>,
     channel: String,
     #[serde(rename = "homeTeam")]
     home_team: MatchDetailTeam,
@@ -98,7 +127,7 @@ struct MatchDetail {
     away_team: MatchDetailTeam,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Deserialize, Debug)]
 struct MatchDetailTeam {
     id: String,
     name: String,
@@ -195,4 +224,5 @@ fn can_parse_team_calendar() {
 
     let resp: TeamCalendarResponse = serde_json::from_str(input).unwrap();
     println!("{:?}", resp);
+    println!("start date: {:?}", resp.data.team_calendar.get(1).unwrap().start_date);
 }
