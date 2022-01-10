@@ -1,10 +1,7 @@
 use chrono::offset::LocalResult;
 use chrono::prelude::*;
-use chrono::ParseResult;
 use serde::de::{self, Deserialize, Deserializer};
 use serde::*;
-use std::error::Error;
-use std::string::ParseError;
 
 #[derive(Deserialize, Debug)]
 pub struct TeamCalendarResponse {

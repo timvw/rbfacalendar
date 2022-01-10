@@ -5,7 +5,6 @@ mod calendar;
 mod rbfa;
 use rocket::http::ContentType;
 use rocket::response::content;
-use rocket::response::content::*;
 
 #[rocket::main]
 #[allow(unused_must_use)]
