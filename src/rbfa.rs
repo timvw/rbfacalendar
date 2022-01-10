@@ -17,29 +17,6 @@ struct TeamCalendarmResponseData {
     match_details: Vec<MatchDetail>,
 }
 
-fn datetime_utc_from_rbfa_date_str<'de, D: Deserializer<'de>>(d: D) -> Result<DateTime<Utc>, D::Error>  {
-
-    let result = String::deserialize(d)
-        .and_then(|s| NaiveDateTime::parse_from_str(&s, "%Y-%m-%dT%H:%M:%S").map_err(|err| de::Error::custom(err.to_string())))
-        .and_then(|ndt| match Utc.from_local_datetime(&ndt) {
-            LocalResult::None => Err(de::Error::custom("Could not parse date")),
-            LocalResult::Single(dt) => Ok(dt),
-            LocalResult::Ambiguous(dt1, dt2) => Err(de::Error::custom(format!("Ambiguous local time, ranging from {:?} to {:?}", dt1, dt2)))
-        });
-
-    result
-}
-
-#[test]
-fn can_parse_datetime_utc_from_rbfa_date_str() {
-    use serde::de::IntoDeserializer;
-    use serde::de::value::{StrDeserializer, Error as ValueError};
-    let deserializer: StrDeserializer<ValueError> = "2021-09-04T01:02:03".into_deserializer();
-    assert_eq!(datetime_utc_from_rbfa_date_str(deserializer), Ok(Utc.ymd(2021, 9, 4).and_hms(1, 2, 3)));
-    assert_eq!(datetime_utc_from_rbfa_date_str("2021-09-04T01:02:03".into_deserializer() as StrDeserializer<ValueError>), Ok(Utc.ymd(2021, 9, 4).and_hms(1, 2, 3)));
-    assert!(datetime_utc_from_rbfa_date_str("2021-09-04T01:02:03X".into_deserializer() as StrDeserializer<ValueError>).is_err());
-}
-
 #[derive(Deserialize, Debug)]
 struct MatchDetail {
     id: String,
@@ -61,6 +38,29 @@ struct MatchDetailTeam {
     logo: String,
     #[serde(rename = "__typename")]
     type_name: String,
+}
+
+fn datetime_utc_from_rbfa_date_str<'de, D: Deserializer<'de>>(d: D) -> Result<DateTime<Utc>, D::Error>  {
+
+    let result = String::deserialize(d)
+        .and_then(|s| NaiveDateTime::parse_from_str(&s, "%Y-%m-%dT%H:%M:%S").map_err(|err| de::Error::custom(err.to_string())))
+        .and_then(|ndt| match Utc.from_local_datetime(&ndt) {
+            LocalResult::None => Err(de::Error::custom("Could not parse date")),
+            LocalResult::Single(dt) => Ok(dt),
+            LocalResult::Ambiguous(dt1, dt2) => Err(de::Error::custom(format!("Ambiguous local time, ranging from {:?} to {:?}", dt1, dt2)))
+        });
+
+    result
+}
+
+#[test]
+fn can_parse_datetime_utc_from_rbfa_date_str() {
+    use serde::de::IntoDeserializer;
+    use serde::de::value::{StrDeserializer, Error as ValueError};
+    let deserializer: StrDeserializer<ValueError> = "2021-09-04T01:02:03".into_deserializer();
+    assert_eq!(datetime_utc_from_rbfa_date_str(deserializer), Ok(Utc.ymd(2021, 9, 4).and_hms(1, 2, 3)));
+    assert_eq!(datetime_utc_from_rbfa_date_str("2021-09-04T01:02:03".into_deserializer() as StrDeserializer<ValueError>), Ok(Utc.ymd(2021, 9, 4).and_hms(1, 2, 3)));
+    assert!(datetime_utc_from_rbfa_date_str("2021-09-04T01:02:03X".into_deserializer() as StrDeserializer<ValueError>).is_err());
 }
 
 #[test]
@@ -164,10 +164,9 @@ async fn can_fetch_team_calendar() {
 
     let resp = reqwest::get(url)
         .await.unwrap()
-        .json::<serde_json::Value>()
-        .await.unwrap();
+        .json::<TeamCalendarResponse>()
+        .await;
 
-    println!("{:?}", resp);
-
-    assert!(true)
+    assert!(resp.is_ok());
+    println!("{:?}", resp.unwrap());
 }
