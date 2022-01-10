@@ -7,37 +7,37 @@ use chrono::offset::LocalResult;
 use serde::de::{self, Deserialize, Deserializer};
 
 #[derive(Deserialize, Debug)]
-struct TeamCalendarResponse {
-    data: TeamCalendarmResponseData,
+pub struct TeamCalendarResponse {
+    pub data: TeamCalendarmResponseData,
 }
 
 #[derive(Deserialize, Debug)]
-struct TeamCalendarmResponseData {
+pub struct TeamCalendarmResponseData {
     #[serde(rename = "teamCalendar")]
-    match_details: Vec<MatchDetail>,
+    pub match_details: Vec<MatchDetail>,
 }
 
 #[derive(Deserialize, Debug)]
-struct MatchDetail {
-    id: String,
+pub struct MatchDetail {
+    pub id: String,
     #[serde(rename = "startDate", deserialize_with = "datetime_utc_from_rbfa_date_str")]
-    start_date: DateTime<Utc>,
-    channel: String,
+    pub start_date: DateTime<Utc>,
+    pub channel: String,
     #[serde(rename = "homeTeam")]
-    home_team: MatchDetailTeam,
+    pub home_team: MatchDetailTeam,
     #[serde(rename = "awayTeam")]
-    away_team: MatchDetailTeam,
+    pub away_team: MatchDetailTeam,
 }
 
 #[derive(Deserialize, Debug)]
-struct MatchDetailTeam {
-    id: String,
-    name: String,
+pub struct MatchDetailTeam {
+    pub id: String,
+    pub name: String,
     #[serde(rename = "clubId")]
-    club_id: String,
-    logo: String,
+    pub club_id: String,
+    pub logo: String,
     #[serde(rename = "__typename")]
-    type_name: String,
+    pub type_name: String,
 }
 
 fn datetime_utc_from_rbfa_date_str<'de, D: Deserializer<'de>>(d: D) -> Result<DateTime<Utc>, D::Error>  {
@@ -154,17 +154,22 @@ fn can_parse_team_calendar() {
     assert_eq!(team_calendar_response.data.match_details[0].start_date, Utc.ymd(2021, 9, 4).and_hms(14, 0, 0));
 }
 
-#[tokio::test]
-#[ignore]
-async fn can_fetch_team_calendar() {
-
-    let team_id = 22235414;
+pub async fn get_team_calendar(team_id: &str) -> Result<TeamCalendarResponse, reqwest::Error> {
 
     let url = format!("https://datalake-prod2018.rbfa.be/graphql?operationName=GetTeamCalendar&variables=%7B%22teamId%22%3A%{}%22%2C%22language%22%3A%22nl%22%2C%22sortByDate%22%3A%22asc%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22bf4be0c185dee11a27079e529a04d41dc692389ada678dac1f2280e056de7b7d%22%7D%7D", team_id);
 
-    let resp = reqwest::get(url)
+    reqwest::get(url)
         .await.unwrap()
         .json::<TeamCalendarResponse>()
+        .await
+}
+
+#[tokio::test]
+//#[ignore]
+async fn can_get_team_calendar() {
+
+    let team_id = "22235414";
+    let resp = get_team_calendar(team_id)
         .await;
 
     assert!(resp.is_ok());
