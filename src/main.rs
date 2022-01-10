@@ -2,6 +2,7 @@
 
 mod rbfa;
 mod calendar;
+use rocket::http::ContentType;
 use rocket::response::content;
 use rocket::response::content::*;
 
@@ -21,8 +22,10 @@ fn index() -> content::Html<&'static str> {
 }
 
 #[get("/calendar/<team_id>")]
-async fn calendar_for_team_id(team_id: String) -> String {
+async fn calendar_for_team_id(team_id: String) -> (ContentType, String) {
     let response = rbfa::get_team_calendar(&team_id).await.unwrap();
-    format!("{:?}", response)
+    let calendar = calendar::make_calendar_from_rbfa_match_details(&response.data.match_details);
+    (ContentType::Calendar, format!("{}", calendar))
+
 }
 
