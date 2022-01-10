@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rbfacalendar
+  labels:
+    app: rbfacalendar
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rbfacalendar
+  namespace: rbfacalendar
+  labels:
+    app: rbfacalendar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rbfacalendar
+  template:
+    metadata:
+      labels:
+        app: rbfacalendar
+    spec:
+      containers:
+        - name: rbfacalendar
+          image: registry.apps.timvw.be/rbfacalendar:latest
+          ports:
+            - containerPort: 8000
+          imagePullPolicy: "Always"
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rbfacalendar
+  namespace: rbfacalendar
+  labels:
+    app: rbfacalendar
+spec:
+  selector:
+    app: rbfacalendar
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rbfacalendar
+  namespace: rbfacalendar
+  labels:
+    app: rbfacalendar
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:
+        - rbfacalendar.apps.timvw.be
+      secretName: rbfacalendar-apps-tls-secret
+  rules:
+    - host: rbfacalendar.apps.timvw.be
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rbfacalendar
+                port:
+                  number: 8000
