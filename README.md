@@ -2,6 +2,18 @@
 
 [iCalendar](https://en.wikipedia.org/wiki/ICalendar) for soccer teams.
 
+## Running the app
+
+```bash
+cargo watch -x run # serves static files from ./webapp/dist
+
+webapp:
+cd webapp
+ng serve --open
+ng build # copies output to ./webapp/dist (served by rust/rocket)
+```
+
+
 ## Building
 
 Uses standard rust toolchain:

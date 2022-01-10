@@ -13,14 +13,19 @@ use rocket::fs::{FileServer, relative};
 async fn main() {
     rocket::build()
         .mount("/", routes![index, calendar_for_team_id])
-        .mount("/", FileServer::from(relative!("/static/assets").rank(1)))
+        .mount("/", FileServer::from(relative!("./webapp/dist/webapp")))
         .launch()
         .await;
 }
 
 #[get("/")]
 fn index() -> content::Html<&'static str> {
-    content::Html("<a href='/calendar/22235414'>22235414</a>")
+    content::Html(r#"
+    <ul>
+    <li><a href='/index.html'>Angular</a></li>
+    <li><a href='/calendar/22235414'>calendar for 22235414</a></li>
+    </ul>
+    "#)
 }
 
 #[get("/calendar/<team_id>")]
