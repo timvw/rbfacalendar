@@ -29,6 +29,7 @@ fn make_match_event<'a>(description: &'a str, start: DateTime<Utc>, location: Op
 }
 
 #[test]
+#[ignore]
 fn can_generate_calendar() {
     let mut calendar = ICalendar::new("2.0", "-//xyz Corp//NONSGML PDA Calendar Version 1.0//EN");
 
