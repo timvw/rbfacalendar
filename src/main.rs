@@ -3,6 +3,9 @@ extern crate rocket;
 
 mod calendar;
 mod rbfa;
+
+use std::path::{Path, PathBuf};
+use rocket::fs::NamedFile;
 use rocket::http::ContentType;
 use rocket::response::content;
 
@@ -10,8 +13,7 @@ use rocket::response::content;
 #[allow(unused_must_use)]
 async fn main() {
     rocket::build()
-        .mount("/", routes![index])
-        .mount("/", routes![calendar_for_team_id])
+        .mount("/", routes![index, calendar_for_team_id, assets])
         .launch()
         .await;
 }
@@ -19,6 +21,11 @@ async fn main() {
 #[get("/")]
 fn index() -> content::Html<&'static str> {
     content::Html("<a href='/calendar/22235414'>22235414</a>")
+}
+
+#[get("/<path..>")]
+async fn assets(path: PathBuf) -> Option<NamedFile> {
+    NamedFile::open(Path::new("static/assets").join(path)).await.ok()
 }
 
 #[get("/calendar/<team_id>")]
