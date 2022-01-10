@@ -49,7 +49,8 @@ pub fn make_calendar_from_rbfa_match_details<'a>(match_details: &'a Vec<MatchDet
         let mut event = Event::new(&match_detail.id, format_datetime(Utc::now()));
         event.push(DtStart::new(format_datetime(match_detail.start_date)));
         event.push(DtEnd::new(format_datetime(match_detail.start_date+ chrono::Duration::hours(2))));
-        event.push(Description::new(escape_text(format!("{:?} - {:?}", match_detail.home_team.name, match_detail.away_team.name))));
+        event.push(Summary::new(escape_text(format!("{} - {}", match_detail.home_team.name, match_detail.away_team.name))));
+        event.push(Description::new(escape_text(format!("{} - {}", match_detail.home_team.name, match_detail.away_team.name))));
         calendar.add_event(event)
     }
     calendar
