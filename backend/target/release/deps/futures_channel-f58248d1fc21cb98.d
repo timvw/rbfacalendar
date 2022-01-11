@@ -1,0 +1,11 @@
+/Users/timvw/src/github/rbfacalendar/backend/target/release/deps/futures_channel-f58248d1fc21cb98.rmeta: /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/lib.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/lock.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/mpsc/mod.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/mpsc/queue.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/oneshot.rs
+
+/Users/timvw/src/github/rbfacalendar/backend/target/release/deps/libfutures_channel-f58248d1fc21cb98.rlib: /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/lib.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/lock.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/mpsc/mod.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/mpsc/queue.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/oneshot.rs
+
+/Users/timvw/src/github/rbfacalendar/backend/target/release/deps/futures_channel-f58248d1fc21cb98.d: /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/lib.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/lock.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/mpsc/mod.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/mpsc/queue.rs /Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/oneshot.rs
+
+/Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/lib.rs:
+/Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/lock.rs:
+/Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/mpsc/mod.rs:
+/Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/mpsc/queue.rs:
+/Users/timvw/.cargo/registry/src/github.com-1ecc6299db9ec823/futures-channel-0.3.19/src/oneshot.rs:
