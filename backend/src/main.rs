@@ -12,7 +12,7 @@ use rocket::fs::{FileServer, relative};
 async fn main() {
     rocket::build()
         .mount("/", routes![calendar_for_team_id])
-        .mount("/", FileServer::from(relative!("./frontend/dist/webapp")))
+        .mount("/", FileServer::from(relative!("./frontend/dist/frontend")))
         .launch()
         .await;
 }
