@@ -34,7 +34,7 @@ FROM debian:buster-slim
 
 WORKDIR /opt/app
 COPY --from=build /opt/app/target/release/rbfacalendar /opt/app/rbfacalendar
-COPY --from=webappbuild /opt/app/frontend/dist /opt/app/dist
+COPY --from=webappbuild /opt/app/frontend/dist /opt/frontend/dist
 
 EXPOSE 8000
 ENV ROCKET_ADDRESS=0.0.0.0
