@@ -7,14 +7,14 @@
       "type": "pwa-chrome",
       "request": "launch",
       "cwd": "${workspaceRoot}",
-      "preLaunchTask": "serve-frontend",
+      "preLaunchTask": "frontend-ng-serve",
       "url": "http://localhost:4200/"
     },
     {
       "name": "ng test",
       "type": "chrome",
       "request": "launch",
-      "preLaunchTask": "test-frontend",
+      "preLaunchTask": "frontend-ng-test",
       "url": "http://localhost:9876/debug.html"
     }
   ]
