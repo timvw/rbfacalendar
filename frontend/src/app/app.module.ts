@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
+import { RbfaService } from './rbfa.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import {MatListModule} from '@angular/material/list';
     MatCardModule,
     MatListModule
   ],
-  providers: [],
+  providers: [RbfaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

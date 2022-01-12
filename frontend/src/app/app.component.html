@@ -4,11 +4,9 @@
     <p>Beschikbare ploegen</p>
 
     <mat-nav-list>
-      <!--<a mat-list-item href="..." *ngFor="let link of links"> {{ link }} </a>-->
-
-      <a mat-list-item href="/calendar/xxx">U10</a>
-      <a mat-list-item href="/calendar/22235414">U11</a>
-      <a mat-list-item href="/calendar/22235412">U12</a>
+      <ng-container *ngFor="let team of teams">
+        <a mat-list-item href="/calendar/{{team.team_id}}">{{ team.name }} </a>
+      </ng-container>
     </mat-nav-list>
   </mat-card-content>
 </mat-card>
