@@ -160,10 +160,83 @@ pub async fn get_team_calendar(team_id: &str) -> Result<TeamCalendarResponse, re
 }
 
 #[tokio::test]
-//#[ignore]
+#[ignore]
 async fn can_get_team_calendar() {
     let team_id = "22235414";
     let resp = get_team_calendar(team_id).await;
+
+    assert!(resp.is_ok());
+    println!("{:?}", resp.unwrap());
+}
+
+#[derive(Deserialize, Debug)]
+pub struct ClubTeamsResponse {
+    pub data: ClubTeamsResponseData,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct ClubTeamsResponseData {
+    #[serde(rename = "clubTeams")]
+    pub club_teams: Vec<Team>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Team {
+    pub id: String,
+    #[serde(rename = "clubId")]
+    pub club_id: String,
+    pub name: String,
+    pub discipline: String
+
+}
+
+#[test]
+fn can_parse_club_teams() {
+    let input = r#"
+{
+    "data": {
+        "clubTeams": [
+        {
+            "id": "215307",
+            "clubId": "2725",
+            "name": "Eerste Elftallen A",
+            "discipline": "Voetbal",
+            "__typename": "Team"
+        },
+        {
+            "id": "215306",
+            "clubId": "2725",
+            "name": "Eerste Elftallen B",
+            "discipline": "Voetbal",
+            "__typename": "Team"
+        }
+        ]
+    }
+}
+    "#;
+
+    let club_teams_response: ClubTeamsResponse = serde_json::from_str(input).expect("Could not parse json");
+
+    assert_eq!(club_teams_response.data.club_teams.len(), 2);
+    assert_eq!(club_teams_response.data.club_teams[0].id, "215307");
+    assert_eq!(club_teams_response.data.club_teams[0].name, "Eerste Elftallen A");
+}
+
+pub async fn get_club_teams(club_id: &str) -> Result<ClubTeamsResponse, reqwest::Error> {
+    let url = format!("https://datalake-prod2018.rbfa.be/graphql?operationName=getClubTeams&variables=%7B%22clubId%22%3A%22{}%22%2C%22language%22%3A%22nl%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22d44e19259679780fe6932644072463997cfe60b66c223d8ba1f53430b0671728%22%7D%7D", club_id);
+
+    reqwest::get(url)
+        .await
+        .unwrap()
+        .json::<ClubTeamsResponse>()
+        .await
+}
+
+#[tokio::test]
+#[ignore]
+async fn can_get_club_teams() {
+    let club_id = "2725";
+    let resp = get_club_teams(club_id).await;
 
     assert!(resp.is_ok());
     println!("{:?}", resp.unwrap());
