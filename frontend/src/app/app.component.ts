@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RbfaService } from './rbfa.service';
-import { Team } from './team';
+import { ClubTeams, Team } from './team';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +22,6 @@ export class AppComponent {
     this.getStudents();
   }
   getStudents(): void {
-    this.rbfaService.getTeams().then(teams => this.teams = teams);
+    this.rbfaService.getTeams().subscribe((clubTeams: ClubTeams) => this.teams = clubTeams.teams);
   }
 }

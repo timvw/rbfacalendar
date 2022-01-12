@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,11 +17,12 @@ import { RbfaService } from './rbfa.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MatCardModule,
     MatListModule
   ],
-  providers: [RbfaService],
+    providers: [RbfaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
