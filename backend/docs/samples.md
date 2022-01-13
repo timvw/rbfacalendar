@@ -1,20 +1,69 @@
 # Samples of source data fetching
 
-## Finding teams
+## Finding clubs
 
-https://datalake-prod2018.rbfa.be/graphql?operationName=getSearchAutocompleteByChannel&variables=%7B%22query%22%3A%22vk%20l%22%2C%22channel%22%3A%22voetbalvlaanderen%22%2C%22language%22%3A%22nl%22%2C%22location%22%3A%22BE%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%220f917517660662d0cf22ed9e85b744b7ffedc5032e7b4104a2b9bc435c2d91fe%22%7D%7D
+https://datalake-prod2018.rbfa.be/graphql?operationName=DoSearch&variables=%7B%22first%22%3A10%2C%22offset%22%3A0%2C%22filter%22%3A%7B%22query%22%3A%22LINDEN%22%2C%22type%22%3A%22club%22%7D%2C%22language%22%3A%22nl%22%2C%22channel%22%3A%22voetbalvlaanderen%22%2C%22location%22%3A%22BE%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22c120b8966cc8f35c5057d149b6071938f597909486fa820b2e8385a50a5dd938%22%7D%7D
+
 
 ```json
 {
     "data": {
-        "searchAutocomplete": {
-            "keywords": [
-                "VK LUDWINA BONHEIDEN",
-                "V.K. LIEDEKERKE",
-                "V.K. LINDEN",
-                "VK LANGEMARK-POELKAPELLE"
+        "search": {
+            "results": [
+                {
+                    "id": "2725",
+                    "logo": "https://belgianfootball.s3.eu-central-1.amazonaws.com/s3fs-public/rbfa/img/logos/clubs/08522.jpg",
+                    "clubName": "V.K. LINDEN",
+                    "registrationNumber": "08522",
+                    "__typename": "ClubSearchResult"
+                },
+                {
+                    "id": "7838",
+                    "logo": "https://belgianfootball.s3.eu-central-1.amazonaws.com/s3fs-public/rbfa/img/logos/clubs/no_logo.jpg",
+                    "clubName": "MVC 'T LINDENHOF",
+                    "registrationNumber": "M89213",
+                    "__typename": "ClubSearchResult"
+                },
+                {
+                    "id": "4046",
+                    "logo": "https://belgianfootball.s3.eu-central-1.amazonaws.com/s3fs-public/rbfa/img/logos/clubs/23517.jpg",
+                    "clubName": "FORTUNA LINDENHOF ZUTENDAAL",
+                    "registrationNumber": "A23517",
+                    "__typename": "ClubSearchResult"
+                }
             ],
-            "__typename": "SearchKeywords"
+            "pageInfo": {
+                "size": 3,
+                "offset": 0,
+                "total": 3,
+                "__typename": "PageInfo"
+            },
+            "filter": {
+                "type": [
+                    {
+                        "name": "team",
+                        "count": 25,
+                        "__typename": "AggregationBucket"
+                    },
+                    {
+                        "name": "interplayer",
+                        "count": 11,
+                        "__typename": "AggregationBucket"
+                    },
+                    {
+                        "name": "club",
+                        "count": 3,
+                        "__typename": "AggregationBucket"
+                    },
+                    {
+                        "name": "information",
+                        "count": 1,
+                        "__typename": "AggregationBucket"
+                    }
+                ],
+                "__typename": "SearchAggregation"
+            },
+            "__typename": "Search"
         }
     }
 }
