@@ -14,7 +14,7 @@ async fn main() {
     rocket::build()
         .mount("/", routes![calendar_for_team_id])
         .mount("/", FileServer::from(relative!("../frontend/dist/frontend")))
-        .mount("/api", routes![get_club_teams])
+        .mount("/api", routes![get_club_teams, search_clubs])
         .launch()
         .await;
 }
@@ -45,4 +45,27 @@ pub struct GetTeamsResponse {
 pub struct Team {
     pub team_id: String,
     pub name: String,
+}
+
+#[get("/clubs?<q>")]
+pub async fn search_clubs(q: &str) -> Json<SearchClubsResponse> {
+    let rbfa_clubs = rbfa::search_clubs(q).await.unwrap();
+    let clubs = rbfa_clubs.data.search.results.into_iter().map(|club| Club {
+        id: club.id,
+        name: club.club_name,
+        logo: club.logo,
+    }).collect();
+    Json(SearchClubsResponse {clubs,})
+}
+
+#[derive(Serialize, Debug)]
+pub struct SearchClubsResponse {
+    pub clubs: Vec<Club>,
+}
+
+#[derive(Serialize, Debug)]
+pub struct Club {
+    pub id: String,
+    pub name: String,
+    pub logo: String
 }
