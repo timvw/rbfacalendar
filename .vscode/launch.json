@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ng serve",
+      "name": "frontend",
       "type": "pwa-chrome",
       "request": "launch",
       "cwd": "${workspaceRoot}",
@@ -11,11 +11,31 @@
       "url": "http://localhost:4200/"
     },
     {
-      "name": "ng test",
+      "name": "frontend test",
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "frontend-ng-test",
       "url": "http://localhost:9876/debug.html"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "backend",
+      "args": [],
+      "program": "${workspaceFolder}/backend/target/debug/rbfacalendar",
+      "cwd": "${workspaceFolder}",
+      "stopOnEntry": false,
+      "sourceLanguages": ["rust"],
+      "sourceMap": {
+        "/rustc/*": "${env:HOME}/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust"
+      },
+      "preLaunchTask": "build-backend",
+    },
+  ],
+  "compounds": [
+    {
+      "name": "frontend/backend",
+      "configurations": ["frontend", "backend"]
     }
   ]
 }

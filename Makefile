@@ -11,29 +11,29 @@ clean-frontend:
 
 .PHONY: clean-backend
 clean-backend:
-	cd backend && npm cache clear --force
+	cd backend && cargo clean
 
-.PHONY: run
-run: 
-	make -j2 run-frontend run-backend
+.PHONY: build
+build:
+	make -j2 build-frontend build-backend
 
-.PHONY: run-frontend
-run-frontend: 
-	cd frontend && ng serve
+.PHONY: build-frontend
+build-frontend:
+	cd frontend && ng build
 
-.PHONY: run-backend
-run-backend: 
-	cd backend && cargo watch -x run
+.PHONY: build-backend
+build-backend:
+	cd backend && cargo build
 
 .PHONY: test
 test: test-frontend test-backend
 
 .PHONY: test-frontend
-test-frontend: 
+test-frontend:  build-frontend
 	cd frontend && ng test
 
 .PHONY: test-backend
-test-backend: 
+test-backend: build-backend
 	cd backend && cargo test
 
 .PHONY: release
@@ -61,3 +61,15 @@ deploy-container: build-container
 	docker push registry.apps.timvw.be/rbfacalendar:latest
 	kubectl apply -f deployment/deploy.yml
 	kubectl rollout restart deployment rbfacalendar -n rbfacalendar
+
+.PHONY: run
+run: 
+	make -j2 run-frontend run-backend
+
+.PHONY: run-frontend
+run-frontend: 
+	cd frontend && ng serve
+
+.PHONY: run-backend
+run-backend: 
+	cd backend && cargo watch -x run	

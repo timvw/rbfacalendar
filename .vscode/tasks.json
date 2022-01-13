@@ -3,6 +3,21 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "build-frontend",
+      "type": "shell",
+      "command": "make build-frontend"
+    },
+    {
+      "label": "release-frontend",
+      "type": "shell",
+      "command": "make release-frontend"
+    },
+    {
+      "label": "build-backend",
+      "type": "shell",
+      "command": "make build-backend"
+    },
+    {
       "label": "frontend-ng-serve",
       "type": "shell",
       "command": "npm run start --prefix ./frontend",
@@ -25,42 +40,6 @@
       "label": "frontend-ng-test",
       "type": "shell",
       "command": "npm test --prefix ./frontend",
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
-    },         
-    {
-      "type": "npm",
-      "script": "start",
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
-    },
-    {
-      "type": "npm",
-      "script": "test",
       "isBackground": true,
       "problemMatcher": {
         "owner": "typescript",
