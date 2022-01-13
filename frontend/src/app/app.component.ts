@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
+import { Inject } from '@angular/core';
 import { RbfaService } from './rbfa.service';
-import { ClubTeams, Team } from './team';
+import { Team } from './team';
+import { ClubTeams } from './clubteams';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [RbfaService]
+  providers: [ RbfaService ]
 })
 export class AppComponent {
   title = 'frontend';
@@ -16,7 +18,7 @@ export class AppComponent {
 
   teams: Team[] = [];
 
-  constructor(private rbfaService: RbfaService) { }
+  constructor(@Inject('IRbfaService') private rbfaService: RbfaService) { }
  
  ngOnInit(): void {
     this.getStudents();

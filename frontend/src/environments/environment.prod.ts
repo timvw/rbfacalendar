@@ -1,3 +1,6 @@
+import { RbfaService } from '../app/rbfa.service';
+
 export const environment = {
-  production: true
+  production: true,
+  rbfaService: RbfaService
 };

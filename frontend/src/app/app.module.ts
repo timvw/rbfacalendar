@@ -8,7 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
-import { RbfaService } from './rbfa.service';
+import { environment } from 'src/environments/environment';
+
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,10 @@ import { RbfaService } from './rbfa.service';
     MatCardModule,
     MatListModule
   ],
-    providers: [RbfaService],
+  providers: [ {
+    provide: 'IRbfaService',
+    useClass: environment.rbfaService
+  } ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
