@@ -12,13 +12,15 @@ import { Clubs } from './clubs';
 })
 export class RbfaService implements IRbfaService {
 
-  private teamsUrl = '/api/club/2725/teams';
+  private teamsUrl = '/api/club/';
   private clubsUrl = '/api/clubs?q=';
 
   constructor(private http: HttpClient) { }
 
-  getTeams(): Observable<ClubTeams> {
-    return this.http.get<ClubTeams>(this.teamsUrl);
+  getTeams(club_id: string): Observable<ClubTeams> {
+    var url = this.teamsUrl + encodeURIComponent(club_id) + '/teams';
+    console.log("searching teams with url: " + url);
+    return this.http.get<ClubTeams>(url);
   }
 
   searchClubs(search_term: string): Observable<Clubs> {

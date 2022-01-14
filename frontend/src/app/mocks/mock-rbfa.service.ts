@@ -11,7 +11,7 @@ import { Observable, of } from 'rxjs';
 })
 export class MockRbfaService extends RbfaService {
 
-  override getTeams(): Observable<ClubTeams> {
+  override getTeams(club_id: String): Observable<ClubTeams> {
     const clubTeams: ClubTeams = {
       teams: TEAMS
     }
