@@ -32,8 +32,8 @@ pub struct MatchDetailTeam {
     pub id: String,
     pub name: String,
     #[serde(rename = "clubId")]
-    pub club_id: String,
-    pub logo: String,
+    pub club_id: Option<String>,
+    pub logo: Option<String>,
     #[serde(rename = "__typename")]
     pub type_name: String,
 }
@@ -152,7 +152,7 @@ fn can_parse_team_calendar() {
 
 pub async fn get_team_calendar(team_id: &str) -> Result<TeamCalendarResponse, reqwest::Error> {
     let url = format!("https://datalake-prod2018.rbfa.be/graphql?operationName=GetTeamCalendar&variables=%7B%22teamId%22%3A%22{}%22%2C%22language%22%3A%22nl%22%2C%22sortByDate%22%3A%22asc%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22bf4be0c185dee11a27079e529a04d41dc692389ada678dac1f2280e056de7b7d%22%7D%7D", team_id);
-
+    println!("fetching team calendar from {}", url);
     reqwest::get(url)
         .await
         .unwrap()
