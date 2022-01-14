@@ -334,9 +334,10 @@ pub fn can_deserialize_club_search_result() {
     "#;
 
     let club_search_response: ClubSearchResponse = serde_json::from_str(input).expect("Could not parse json");
-    assert_eq!(club_search_response.data.search.results.len(), 3);
-    assert_eq!(club_search_response.data.search.results[0].id, "2725");
-    assert_eq!(club_search_response.data.search.results[0].club_name, "V.K. LINDEN");
+    let results = club_search_response.data.search.results.expect("expected results to be present");
+    assert_eq!(results.len(), 3);
+    assert_eq!(results[0].id, "2725");
+    assert_eq!(results[0].club_name, "V.K. LINDEN");
 }
 
 pub async fn search_clubs(search_term: &str) -> Result<ClubSearchResponse, reqwest::Error> {
@@ -353,7 +354,7 @@ pub async fn search_clubs(search_term: &str) -> Result<ClubSearchResponse, reqwe
 
 
 #[tokio::test]
-//[ignore]
+#[ignore]
 async fn can_search_clubs() {
     let search_term = "VK Linden";
     let resp = search_clubs(search_term).await;
@@ -361,3 +362,4 @@ async fn can_search_clubs() {
     assert!(resp.is_ok());
     println!("{:?}", resp.unwrap());
 }
+
