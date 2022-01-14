@@ -2,6 +2,7 @@ use chrono::offset::LocalResult;
 use chrono::prelude::*;
 use serde::de::{self, Deserialize, Deserializer};
 use serde::*;
+use url::*;
 
 #[derive(Deserialize, Debug)]
 pub struct TeamCalendarResponse {
@@ -341,8 +342,8 @@ pub fn can_deserialize_club_search_result() {
 }
 
 pub async fn search_clubs(search_term: &str) -> Result<ClubSearchResponse, reqwest::Error> {
-    let url = format!("https://datalake-prod2018.rbfa.be/graphql?operationName=DoSearch&variables=%7B%22first%22%3A10%2C%22offset%22%3A0%2C%22filter%22%3A%7B%22query%22%3A%22{}%22%2C%22type%22%3A%22club%22%7D%2C%22language%22%3A%22nl%22%2C%22channel%22%3A%22voetbalvlaanderen%22%2C%22location%22%3A%22BE%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22c120b8966cc8f35c5057d149b6071938f597909486fa820b2e8385a50a5dd938%22%7D%7D", search_term);
 
+    let url = build_search_clubs_url(search_term);
     println!("fetching {}", url);
 
     reqwest::get(url)
@@ -361,5 +362,75 @@ async fn can_search_clubs() {
 
     assert!(resp.is_ok());
     println!("{:?}", resp.unwrap());
+}
+
+#[derive(Serialize, Debug)]
+struct SearchExtensions {
+    #[serde(rename = "persistedQuery")]
+    persisted_query: PersistedQuery,
+}
+
+#[derive(Serialize, Debug)]
+struct PersistedQuery {
+    version: u32,
+    #[serde(rename = "sha256Hash")]
+    sha256_hash: String,
+}
+
+#[derive(Serialize, Debug)]
+struct SearchVariables {
+    first: u32,
+    offset: u32,
+    filter: SearchFilter,
+    language: String,
+    channel: String,
+    location: String,
+}
+
+#[derive(Serialize, Debug)]
+struct SearchFilter {
+    query: String,
+    #[serde(rename = "type")]
+    type_: String,
+}
+
+fn build_search_clubs_url(search_term: &str) -> String {
+
+    let mut url = Url::parse("https://datalake-prod2018.rbfa.be/graphql?operationName=DoSearch").expect("Failed to parse base search url");
+    
+    let variables_value = serde_json::to_string(&SearchVariables {
+        first: 10,
+        offset: 0,
+        filter: SearchFilter {
+            query: search_term.to_string(),
+            type_: "club".to_string(),
+        },
+        language: "nl".to_string(),
+        channel: "voetbalvlaanderen".to_string(),
+        location: "BE".to_string(),
+    }).expect("Failed to serialize variables");
+
+    url.query_pairs_mut().append_pair("variables", &variables_value);
+
+    let extensions_value = serde_json::to_string(&SearchExtensions {
+        persisted_query: PersistedQuery {
+            version: 1,
+            sha256_hash: "c120b8966cc8f35c5057d149b6071938f597909486fa820b2e8385a50a5dd938".to_string(),
+        },
+    }).expect("Failed to serialize search extensions");
+
+    url.query_pairs_mut().append_pair("extensions", &extensions_value);
+
+    String::from(url.as_ref())
+}
+
+
+#[test]
+fn can_build_search_clubs_url() {
+
+    let actual_url = build_search_clubs_url("V.K. Lin");
+    let expected_url = r#"https://datalake-prod2018.rbfa.be/graphql?operationName=DoSearch&variables=%7B%22first%22%3A10%2C%22offset%22%3A0%2C%22filter%22%3A%7B%22query%22%3A%22V.K.+Lin%22%2C%22type%22%3A%22club%22%7D%2C%22language%22%3A%22nl%22%2C%22channel%22%3A%22voetbalvlaanderen%22%2C%22location%22%3A%22BE%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22c120b8966cc8f35c5057d149b6071938f597909486fa820b2e8385a50a5dd938%22%7D%7D"#;
+
+    assert_eq!(actual_url, expected_url);
 }
 
