@@ -254,7 +254,7 @@ pub struct ClubSearchResponseData {
 
 #[derive(Deserialize, Debug)]
 pub struct ClubSearchResponseDataResults {
-    pub results: Vec<ClubSearchResult>,
+    pub results: Option<Vec<ClubSearchResult>>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -340,8 +340,9 @@ pub fn can_deserialize_club_search_result() {
 }
 
 pub async fn search_clubs(search_term: &str) -> Result<ClubSearchResponse, reqwest::Error> {
-    let url = format!("https://datalake-prod2018.rbfa.be/graphql?operationName=DoSearch&variables=%7B%22first%22%3A10%2C%22offset%22%3A0%2C%22filter%22%3A%7B%22query%22%3A%22{}%22%2C%22type%22%3A%22club%22%7D%2C%22language%22%3A%22nl%22%2C%22channel%22%3A%22voetbalvlaanderen%22%2C%22location%22%3A%22BE%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22c120b8966cc8f35c5057d149b6071938f597909486fa820b2e8385a50a5dd938%22%7D%7D
-    ", search_term);
+    let url = format!("https://datalake-prod2018.rbfa.be/graphql?operationName=DoSearch&variables=%7B%22first%22%3A10%2C%22offset%22%3A0%2C%22filter%22%3A%7B%22query%22%3A%22{}%22%2C%22type%22%3A%22club%22%7D%2C%22language%22%3A%22nl%22%2C%22channel%22%3A%22voetbalvlaanderen%22%2C%22location%22%3A%22BE%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22c120b8966cc8f35c5057d149b6071938f597909486fa820b2e8385a50a5dd938%22%7D%7D", search_term);
+
+    println!("fetching {}", url);
 
     reqwest::get(url)
         .await
@@ -352,7 +353,7 @@ pub async fn search_clubs(search_term: &str) -> Result<ClubSearchResponse, reqwe
 
 
 #[tokio::test]
-#[ignore]
+//[ignore]
 async fn can_search_clubs() {
     let search_term = "VK Linden";
     let resp = search_clubs(search_term).await;

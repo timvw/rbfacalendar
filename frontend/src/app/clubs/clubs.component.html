@@ -1,0 +1,21 @@
+<p>Select a club</p>
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>State</mat-label>
+      <input matInput
+             aria-label="State"
+             [matAutocomplete]="auto"
+             [formControl]="clubsControl">
+      <mat-autocomplete #auto="matAutocomplete" [panelWidth]="300">
+        <ng-container>
+            <mat-option *ngFor="let club of clubs | async" [value]="club.name">
+            <img class="example-option-img" aria-hidden [src]="club.logo" height="25">
+            <span>{{club.name}}</span>
+            </mat-option>
+        </ng-container>
+      </mat-autocomplete>
+    </mat-form-field>
+  
+    <h5>Selected Value: {{clubsControl.value}}</h5>
+
+  </form>

@@ -49,12 +49,22 @@ pub struct Team {
 
 #[get("/clubs?<q>")]
 pub async fn search_clubs(q: &str) -> Json<SearchClubsResponse> {
-    let rbfa_clubs = rbfa::search_clubs(q).await.unwrap();
-    let clubs = rbfa_clubs.data.search.results.into_iter().map(|club| Club {
-        id: club.id,
-        name: club.club_name,
-        logo: club.logo,
-    }).collect();
+    
+    if q.len() < 2 {
+        return Json(SearchClubsResponse {clubs: vec![]});
+    }
+
+    let rbfa_clubs = rbfa::search_clubs(q)
+        .await
+        .unwrap();
+    let clubs = rbfa_clubs.data.search.results
+        .unwrap_or_default()
+        .into_iter().map(|club| Club {
+            id: club.id,
+            name: club.club_name,
+            logo: club.logo,
+        })
+        .collect();
     Json(SearchClubsResponse {clubs,})
 }
 
