@@ -3,6 +3,7 @@ import { RbfaService } from '../rbfa.service';
 import { ClubTeams } from '../clubteams';
 import { TEAMS } from './mock-teams';
 import { Clubs } from '../clubs';
+import { Club } from '../club';
 import { CLUBS } from './mock-clubs';
 import { Observable, of } from 'rxjs';
 
@@ -20,10 +21,18 @@ export class MockRbfaService extends RbfaService {
 
   override searchClubs(search_term: String): Observable<Clubs> {
     console.log("searching clubs with search term: " + search_term);
-    var filteredClubs = CLUBS.filter(club => club.name.toLowerCase().indexOf(search_term.toLowerCase()) > -1);
+
+    var filteredClubs: Club[];
+    if (!search_term || search_term.length < 1) {
+      filteredClubs = [];
+    } else {
+      filteredClubs = CLUBS.filter(club => club.name.toLowerCase().indexOf(search_term.toLowerCase()) > -1);
+    }
+
     const clubs: Clubs = {
       clubs: filteredClubs
     }
+    
     return of(clubs);
   }
 }
