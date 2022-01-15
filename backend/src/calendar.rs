@@ -1,20 +1,19 @@
 use crate::rbfa::MatchDetail;
-use chrono::{DateTime, Utc};
+use chrono::{Utc, NaiveDate, NaiveDateTime};
 use ics::properties::{Description, DtEnd, DtStart, Summary};
 use ics::{escape_text, Event, ICalendar};
 
-fn format_as_dtstamp(dt: DateTime<Utc>) -> String {
-    dt.format("%Y%m%dT%H%M%SZ").to_string()
+fn format_as_dtstamp(dt: NaiveDateTime) -> String {
+    dt.format("%Y%m%dT%H%M%S").to_string()
 }
 
 #[test]
 fn can_format_as_dtstamp() {
-    use chrono::prelude::*;
-    assert_eq!(format_as_dtstamp(Utc.ymd(2022, 1, 2).and_hms(3, 4, 5)), "20220102T030405Z");
+    assert_eq!(format_as_dtstamp(NaiveDate::from_ymd(2022, 1, 2).and_hms(3, 4, 5)), "20220102T030405");
 }
 
 fn make_match_detail_event(match_detail: &MatchDetail) -> Event<'_> {
-    let mut event = Event::new(&match_detail.id, format_as_dtstamp(Utc::now()));
+    let mut event = Event::new(&match_detail.id, format_as_dtstamp(Utc::now().naive_utc()));
     event.push(DtStart::new(format_as_dtstamp(match_detail.start_date)));
     event.push(DtEnd::new(format_as_dtstamp(match_detail.start_date + chrono::Duration::hours(2))));
     event.push(Summary::new(escape_text(format!("{} - {}", match_detail.home_team.name, match_detail.away_team.name))));
@@ -28,4 +27,39 @@ pub fn make_calendar_from_rbfa_match_details(match_details: &Vec<MatchDetail>) -
         calendar.add_event(make_match_detail_event(&match_detail));
     }
     calendar
+}
+
+#[test]
+#[ignore]
+fn can_make_calendar_from_rbfa_match_details() {
+
+    use chrono::prelude::*;
+    use crate::rbfa::MatchDetailTeam;
+
+    let match_details = vec![
+        MatchDetail {
+            id: "1".to_string(),
+            start_date: NaiveDate::from_ymd(2022, 1, 15).and_hms(12, 0, 0),
+            channel: "meh".to_string(),
+            home_team: MatchDetailTeam {
+                id: "1".to_string(),
+                name: "Home".to_string(),
+                club_id: None,
+                logo: None,
+                type_name: "MatchDetailTeam".to_string(),
+            },
+            away_team: MatchDetailTeam {
+                id: "2".to_string(),
+                name: "Away".to_string(),
+                club_id: None,
+                logo: None,
+                type_name: "MatchDetailTeam".to_string(),
+            },
+        },
+    ];
+
+    let calendar = make_calendar_from_rbfa_match_details(&match_details);
+    calendar.save_file("/tmp/test.ics").expect("failed to save calendar to /tmp/test.ics");
+    use std::process::Command;
+    Command::new("open").arg("/tmp/test.ics").spawn().expect("failed to open /tmp/test.ics");
 }
