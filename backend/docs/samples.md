@@ -182,3 +182,74 @@ https://datalake-prod2018.rbfa.be/graphql?operationName=GetTeamCalendar
     }
 }
 ```
+
+## Feching match details
+
+https://datalake-prod2018.rbfa.be/graphql?operationName=GetMatchDetail&variables=%7B%22matchId%22%3A%225792195%22%2C%22language%22%3A%22nl%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%2232c53e1629f73faf3d5465ddd5bb6947f3021bb571be9ef9cd1483bc2a1c3071%22%7D%7D
+
+```json
+{
+    "data": {
+        "matchDetail": {
+            "id": "5792195",
+            "title": "U11",
+            "startDate": "2022-01-19T18:30:00",
+            "channel": "voetbalvlaanderen",
+            "series": {
+                "id": "FRN_10000008",
+                "name": "U11",
+                "__typename": "MatchSeries"
+            },
+            "eventType": "friendly",
+            "state": "planned",
+            "location": {
+                "id": "10001322",
+                "name": "Schalkhoven",
+                "city": "Hoeselt",
+                "postalCode": "3730",
+                "address": "Plasstraat",
+                "pitchCode": "1",
+                "pitchType": "grass",
+                "synthetic": false,
+                "__typename": "MatchDetailLocation"
+            },
+            "officials": [],
+            "events": [],
+            "shootout": [],
+            "homeTeam": {
+                "id": "230812",
+                "name": "VV HOESELT",
+                "registrationNumber": "01479",
+                "clubId": "1238",
+                "logo": "https://belgianfootball.s3.eu-central-1.amazonaws.com/s3fs-public/rbfa/img/logos/clubs/01479.jpg",
+                "players": [],
+                "substitutes": [],
+                "staff": [],
+                "__typename": "MatchDetailTeam"
+            },
+            "awayTeam": {
+                "id": "235414",
+                "name": "VK.LINDEN",
+                "registrationNumber": "08522",
+                "clubId": "2725",
+                "logo": "https://belgianfootball.s3.eu-central-1.amazonaws.com/s3fs-public/rbfa/img/logos/clubs/08522.jpg",
+                "players": [],
+                "substitutes": [],
+                "staff": [],
+                "__typename": "MatchDetailTeam"
+            },
+            "outcome": {
+                "status": "planned",
+                "homeTeamGoals": null,
+                "homeTeamPenaltiesScored": null,
+                "awayTeamGoals": null,
+                "awayTeamPenaltiesScored": null,
+                "forfeitBy": "",
+                "subscript": null,
+                "__typename": "MatchDetailOutcome"
+            },
+            "__typename": "MatchDetail"
+        }
+    }
+}
+```
