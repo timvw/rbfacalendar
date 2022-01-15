@@ -1,5 +1,5 @@
 use crate::rbfa::MatchDetail;
-use chrono::{Utc, NaiveDate, NaiveDateTime};
+use chrono::{Utc, NaiveDateTime};
 use ics::properties::{Description, DtEnd, DtStart, Summary};
 use ics::{escape_text, Event, ICalendar};
 
@@ -9,6 +9,7 @@ fn format_as_dtstamp(dt: NaiveDateTime) -> String {
 
 #[test]
 fn can_format_as_dtstamp() {
+    use chrono::NaiveDate;
     assert_eq!(format_as_dtstamp(NaiveDate::from_ymd(2022, 1, 2).and_hms(3, 4, 5)), "20220102T030405");
 }
 
@@ -33,7 +34,7 @@ pub fn make_calendar_from_rbfa_match_details(match_details: &Vec<MatchDetail>) -
 #[ignore]
 fn can_make_calendar_from_rbfa_match_details() {
 
-    use chrono::prelude::*;
+    use chrono::NaiveDate;
     use crate::rbfa::MatchDetailTeam;
 
     let match_details = vec![
