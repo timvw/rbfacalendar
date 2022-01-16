@@ -13,14 +13,8 @@ import { RbfaService } from '../rbfa.service';
   styleUrls: ['./clubs.component.css']
 })
 export class ClubsComponent implements OnInit {
-  
+
   clubsControl = new FormControl();
-
-  pclubs: Club[] = [
-    { id: '2725', name: 'V.K. LINDEN', logo: 'https://belgianfootball.s3.eu-central-1.amazonaws.com/s3fs-public/rbfa/img/logos/clubs/08522.jpg' },
-    { id: '7838', name: 'MVC \'T LINDENHOF', logo: 'https://belgianfootball.s3.eu-central-1.amazonaws.com/s3fs-public/rbfa/img/logos/clubs/no_logo.jpg' }
-  ];
-
   clubs: Observable<Club[]>;
 
   constructor(
@@ -37,7 +31,7 @@ export class ClubsComponent implements OnInit {
           return rbfaService.searchClubs(val).pipe(
             map(data => data.clubs)
           )
-      }) 
+      })
     );
   }
 
@@ -50,7 +44,7 @@ export class ClubsComponent implements OnInit {
 
   onClubSelected(item: any): void {
     console.log("onSelect event... club, name: " + item.option.value.name + ", id: " + item.option.value.id);
-    this.router.navigate(['teams', item.option.value.id]);
+    //this.router.navigate(['teams', item.option.value.id]);
   }
 
 }
