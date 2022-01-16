@@ -1,10 +1,10 @@
 <form class="example-form">
     <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Select a club: </mat-label>
       <input matInput
              aria-label="State"
              [matAutocomplete]="auto"
-             [formControl]="clubsControl">
+             [formControl]="clubsControl"
+             placeholder="Type minstens 2 characters">
       <mat-autocomplete #auto="matAutocomplete" [panelWidth]="300" (optionSelected)="onClubSelected($event)" [displayWith]="displayFn">
         <ng-container>
             <mat-option *ngFor="let club of clubs | async" [value]="club">
