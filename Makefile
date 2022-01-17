@@ -72,4 +72,12 @@ run-frontend:
 
 .PHONY: run-backend
 run-backend: 
-	cd backend && cargo watch -x run	
+	cd backend && cargo watch -x run
+
+.PHONY: run-staging
+run-staging:
+	make -j2 run-backend run-staging-frontend 
+
+.PHONY: run-staging-frontend
+run-staging-frontend: 
+	cd frontend && ng serve --configuration=staging	

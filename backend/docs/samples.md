@@ -1,5 +1,14 @@
 # Samples of source data fetching
 
+## Instead of doing GET requests, it's also possible to POST the query:
+
+```bash
+curl -X POST https://datalake-prod2018.rbfa.be/graphql \
+   -H 'Content-Type: application/json' \
+   -d '{"operationName":"DoSearch", "variables": {"first":1,"offset":0,"filter":{"query":"R.S.C A","type":"club"},"language":"nl","channel":"voetbalvlaanderen","location":"BE"}, "extensions": {"persistedQuery":{"version":1,"sha256Hash":"c120b8966cc8f35c5057d149b6071938f597909486fa820b2e8385a50a5dd938"}}}'
+```
+
+
 ## Finding clubs
 
 https://datalake-prod2018.rbfa.be/graphql?operationName=DoSearch&variables=%7B%22first%22%3A10%2C%22offset%22%3A0%2C%22filter%22%3A%7B%22query%22%3A%22LINDEN%22%2C%22type%22%3A%22club%22%7D%2C%22language%22%3A%22nl%22%2C%22channel%22%3A%22voetbalvlaanderen%22%2C%22location%22%3A%22BE%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%22c120b8966cc8f35c5057d149b6071938f597909486fa820b2e8385a50a5dd938%22%7D%7D
