@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IRbfaService } from './rbfa.service.interface';
 import { ClubTeams } from './clubteams';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {catchError, Observable, retry} from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { Club } from './club';
 import { Clubs } from './clubs';
@@ -13,7 +13,8 @@ import { Clubs } from './clubs';
 export class RbfaService implements IRbfaService {
 
   private teamsUrl = '/api/club/';
-  private clubsUrl = '/api/clubs?q=';
+  private clubsUrl = '/api/clubs';
+  private clubs: Set<Club> = new Set<Club>();
 
   constructor(private http: HttpClient) { }
 
@@ -24,7 +25,17 @@ export class RbfaService implements IRbfaService {
   }
 
   searchClubs(search_term: string): Observable<Clubs> {
-      console.log("searching clubs with search term: " + search_term);
-      return this.http.get<Clubs>(this.clubsUrl + encodeURIComponent(search_term));
+
+    const options = search_term ? { params: new HttpParams().set('q', search_term) } : {};
+
+    var result = this.http.get<Clubs>(this.clubsUrl, options);
+    /*
+    result.subscribe(clubs => {
+      for (const club of clubs.clubs) {
+        this.clubs.add(club);
+      }
+    });
+     */
+    return result;
   }
 }
