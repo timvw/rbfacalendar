@@ -25,17 +25,7 @@ export class RbfaService implements IRbfaService {
   }
 
   searchClubs(search_term: string): Observable<Clubs> {
-
     const options = search_term ? { params: new HttpParams().set('q', search_term) } : {};
-
-    var result = this.http.get<Clubs>(this.clubsUrl, options);
-    /*
-    result.subscribe(clubs => {
-      for (const club of clubs.clubs) {
-        this.clubs.add(club);
-      }
-    });
-     */
-    return result;
+    return this.http.get<Clubs>(this.clubsUrl, options);
   }
 }
