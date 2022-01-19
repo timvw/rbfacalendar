@@ -14,7 +14,6 @@ export class RbfaService implements IRbfaService {
 
   private teamsUrl = '/api/club/';
   private clubsUrl = '/api/clubs';
-  private clubs: Set<Club> = new Set<Club>();
 
   constructor(private http: HttpClient) { }
 
