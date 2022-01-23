@@ -7,10 +7,27 @@ mod rbfa;
 use rocket::http::ContentType;
 use rocket::fs::{FileServer, relative};
 use rocket::serde::{Serialize, json::Json};
+use std::io::Write;
+use chrono::Local;
+use env_logger::Builder;
+use log::LevelFilter;
 
 #[rocket::main]
 #[allow(unused_must_use)]
 async fn main() {
+
+    Builder::new()
+        .format(|buf, record| {
+            writeln!(buf,
+                     "{} [{}] - {}",
+                     Local::now().format("%Y-%m-%dT%H:%M:%S"),
+                     record.level(),
+                     record.args()
+            )
+        })
+        .filter(None, LevelFilter::Info)
+        .init();
+
     rocket::build()
         .mount("/", routes![calendar_for_team_id])
         .mount("/", FileServer::from(relative!("../frontend/dist/frontend")))
