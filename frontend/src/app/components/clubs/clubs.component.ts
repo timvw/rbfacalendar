@@ -1,11 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, map, startWith } from 'rxjs/operators';
 
 import { Club } from '../../models/club';
 import { RbfaService } from '../../services/rbfa.service';
+import {isObjectValidator} from "../../is-object.validator";
 
 @Component({
   selector: 'app-clubs',
@@ -14,14 +15,17 @@ import { RbfaService } from '../../services/rbfa.service';
 })
 export class ClubsComponent implements OnInit {
 
-  clubsControl = new FormControl();
+  form = new FormGroup({
+    club: new FormControl('', [Validators.required, isObjectValidator() ]),
+  });
+
   clubs: Observable<Club[]>;
 
   constructor(
     @Inject('IRbfaService') private rbfaService: RbfaService,
     private router: Router
     ) {
-    this.clubs = this.clubsControl.valueChanges.pipe(
+    this.clubs = this.form.controls['club'].valueChanges.pipe(
       startWith(''),
       debounceTime(300),
       distinctUntilChanged(),
@@ -40,11 +44,4 @@ export class ClubsComponent implements OnInit {
   displayFn(club: Club): string {
     return club && club.name ? club.name : '';
   }
-
-
-  onClubSelected(item: any): void {
-    console.log("onSelect event... club, name: " + item.option.value.name + ", id: " + item.option.value.id);
-    //this.router.navigate(['teams', item.option.value.id]);
-  }
-
 }

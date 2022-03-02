@@ -1,17 +1,17 @@
-<form class="example-form">
-    <mat-form-field class="example-full-width" appearance="fill">
-      <input matInput
-             aria-label="State"
-             [matAutocomplete]="auto"
-             [formControl]="clubsControl"
-             placeholder="Type minstens 2 characters">
-      <mat-autocomplete #auto="matAutocomplete" [panelWidth]="300" (optionSelected)="onClubSelected($event)" [displayWith]="displayFn">
-        <ng-container>
-            <mat-option *ngFor="let club of clubs | async" [value]="club">
-            <img class="example-option-img" aria-hidden [src]="club.logo" height="25">
-            <span>{{club.name}}</span>
-            </mat-option>
-        </ng-container>
-      </mat-autocomplete>
-    </mat-form-field>
-  </form>
+<form [formGroup]="form">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <input matInput
+           aria-label="State"
+           [matAutocomplete]="auto"
+           formControlName="club"
+           placeholder="Type minstens 2 characters">
+    <mat-autocomplete #auto="matAutocomplete" [panelWidth]="300" [displayWith]="displayFn">
+      <ng-container>
+          <mat-option *ngFor="let club of clubs | async" [value]="club">
+          <img class="example-option-img" aria-hidden [src]="club.logo" height="25">
+          <span>{{club.name}}</span>
+          </mat-option>
+      </ng-container>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

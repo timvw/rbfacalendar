@@ -1,1 +1,12 @@
 <p>home works!</p>
+<mat-stepper [linear]="true">
+  <mat-step label="Kies club" [stepControl]="clubs.form">
+    <app-clubs #clubs></app-clubs>
+  </mat-step>
+  <mat-step label="Kies team">
+    Content 2
+  </mat-step>
+  <mat-step label="Importeer kalender">
+    Content 3
+  </mat-step>
+</mat-stepper>
