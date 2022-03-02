@@ -4,8 +4,8 @@ import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, map, startWith } from 'rxjs/operators';
 
-import { Club } from '../club';
-import { RbfaService } from '../rbfa.service';
+import { Club } from '../../models/club';
+import { RbfaService } from '../../services/rbfa.service';
 
 @Component({
   selector: 'app-clubs',

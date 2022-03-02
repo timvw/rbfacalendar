@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { RbfaService } from '../rbfa.service';
-import { ClubTeams } from '../clubteams';
+import { RbfaService } from '../services/rbfa.service';
+import { ClubTeams } from '../models/clubteams';
 import { TEAMS } from './mock-teams';
-import { Clubs } from '../clubs';
-import { Club } from '../club';
+import { Clubs } from '../models/clubs';
+import { Club } from '../models/club';
 import { CLUBS } from './mock-clubs';
 import { Observable, of } from 'rxjs';
 

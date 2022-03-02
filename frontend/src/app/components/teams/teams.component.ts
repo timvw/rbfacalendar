@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Inject } from '@angular/core';
-import { RbfaService } from '../rbfa.service';
-import { Team } from '../team';
-import { ClubTeams } from '../clubteams';
+import { RbfaService } from '../../services/rbfa.service';
+import { Team } from '../../models/team';
+import { ClubTeams } from '../../models/clubteams';
 
 @Component({
   selector: 'app-teams',

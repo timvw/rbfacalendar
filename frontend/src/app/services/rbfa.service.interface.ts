@@ -1,5 +1,5 @@
-import { ClubTeams } from './clubteams';
-import { Clubs } from './clubs';
+import { ClubTeams } from '../models/clubteams';
+import { Clubs } from '../models/clubs';
 import { Observable } from 'rxjs';
 
 export interface IRbfaService {

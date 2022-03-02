@@ -2,7 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { RbfaService } from '../app/rbfa.service';
+import { RbfaService } from '../app/services/rbfa.service';
 
 export const environment = {
   production: false,

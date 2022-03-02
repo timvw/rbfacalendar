@@ -1,4 +1,4 @@
-import { Team } from '../team';
+import { Team } from '../models/team';
  
 export const TEAMS: Team[] = [
   { team_id: '215307', name: 'Eerste Elftallen A'},

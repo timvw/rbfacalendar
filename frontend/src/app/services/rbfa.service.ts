@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { IRbfaService } from './rbfa.service.interface';
-import { ClubTeams } from './clubteams';
+import { ClubTeams } from '../models/clubteams';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {catchError, Observable, retry} from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { Club } from './club';
-import { Clubs } from './clubs';
+import { Club } from '../models/club';
+import { Clubs } from '../models/clubs';
 
 @Injectable({
   providedIn: 'root'
