@@ -6,6 +6,7 @@ import { Clubs } from '../models/clubs';
 import { Club } from '../models/club';
 import { CLUBS } from './mock-clubs';
 import { Observable, of } from 'rxjs';
+import {Team} from "../models/team";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,11 @@ import { Observable, of } from 'rxjs';
 export class MockRbfaService extends RbfaService {
 
   override getTeams(club_id: String): Observable<ClubTeams> {
+
     const clubTeams: ClubTeams = {
-      teams: TEAMS
+      teams: TEAMS.map(x => {
+        return { ...x, name: club_id + ":" + x.name}
+      })
     }
     return of(clubTeams);
   }
@@ -32,7 +36,7 @@ export class MockRbfaService extends RbfaService {
     const clubs: Clubs = {
       clubs: filteredClubs
     }
-    
+
     return of(clubs);
   }
 }

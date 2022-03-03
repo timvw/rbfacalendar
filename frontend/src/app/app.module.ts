@@ -8,6 +8,7 @@ import { ComponentsModule } from './components/components.module';
 import { AppComponent } from './app.component';
 
 import { environment } from 'src/environments/environment';
+import {FullscreenOverlayContainer, OverlayContainer} from "@angular/cdk/overlay";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { environment } from 'src/environments/environment';
     ComponentsModule
   ],
   providers: [
-      { provide: 'IRbfaService', useClass: environment.rbfaService }
+    { provide: 'IRbfaService', useClass: environment.rbfaService },
+    { provide: OverlayContainer, useClass: FullscreenOverlayContainer},
   ],
   bootstrap: [AppComponent]
 })

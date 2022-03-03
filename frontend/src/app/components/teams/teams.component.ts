@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Inject } from '@angular/core';
 import { RbfaService } from '../../services/rbfa.service';
@@ -19,21 +19,56 @@ export class TeamsComponent implements OnInit {
     team: new FormControl('', [Validators.required, isObjectValidator() ]),
   });
 
+  @Input() teams: Team[] = [];
+
   constructor(
     @Inject('IRbfaService') private rbfaService: RbfaService,
     private route: ActivatedRoute
   ) {}
 
-  teams: Team[] = [];
+  ngOnChanges(changes: SimpleChanges) {
+    this.assignData();
+  }
 
   ngOnInit(): void {
-
-    const routeParams = this.route.snapshot.paramMap;
-    const clubIdFromRoute = routeParams.get('club_id') || "";
-    this.getTeams(clubIdFromRoute);
+    this.assignData();
   }
 
   getTeams(club_id: string): void {
     this.rbfaService.getTeams(club_id).subscribe((clubTeams: ClubTeams) => this.teams = clubTeams.teams);
+  }
+
+  assignData() {
+
+    /*
+    if(this.dwhPuddleTemplate != null) {
+      let data = this.dwhPuddleTemplate;
+
+      this.piiTypes = data.lookupData.piiTypes.items;
+      this.dataTypes = data.lookupData.dataTypes.items;
+      this.gdprTypes = data.lookupData.gdprTypes.items;
+
+      this.form.controls['table'].setValue(data.table);
+
+      this.fields.clear();
+      for (let field of data.fields) {
+        let fieldForm = this._formBuilder.group({
+          sourceName: this._formBuilder.control(field.sourceName),
+          sourceDataType: this._formBuilder.control(field.sourceDataType),
+          sourceNullable: this._formBuilder.control(field.sourceNullable),
+          name: this._formBuilder.control(field.name),
+          dataType: this._formBuilder.control(field.dataType, Validators.required),
+          nullable: this._formBuilder.control(field.nullable, Validators.required),
+          piiType: this._formBuilder.control(field.piiType),
+        });
+        this.fields.push(fieldForm);
+      }
+
+      this.form.controls['fileName'].setValue(data.fileName);
+      this.form.controls['className'].setValue(data.className);
+      this.form.controls['gdprTypes'].setValue(data.gdprTypes);
+    }
+
+     */
   }
 }

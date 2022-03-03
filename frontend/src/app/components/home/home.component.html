@@ -1,12 +1,16 @@
 <p>home works!</p>
-<mat-stepper [linear]="true">
-  <mat-step label="Kies club" [stepControl]="clubs.form">
-    <app-clubs #clubs></app-clubs>
+<mat-stepper [linear]="true" (selectionChange)="onSelectionChange($event)">
+  <mat-step label="Kies club" [stepControl]="c.form">
+    <app-clubs #c></app-clubs>
+    <button mat-button matStepperNext [disabled]="!c.form.valid">Volgende</button>
   </mat-step>
-  <mat-step label="Kies team" [stepControl]="teams.form">
-    <app-teams #teams></app-teams>
+  <mat-step label="Kies team" [stepControl]="t.form">
+    <app-teams #t [teams]="teams"></app-teams>
+    <button mat-button matStepperPrevious>Vorige</button>
+    <button mat-button matStepperNext [disabled]="!t.form.valid">Volgende</button>
   </mat-step>
   <mat-step label="Importeer kalender">
     Content 3
+    <button mat-button matStepperPrevious>Vorige</button>
   </mat-step>
 </mat-stepper>
