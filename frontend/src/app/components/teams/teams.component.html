@@ -1,7 +1,5 @@
 <form [formGroup]="form">
-
-
-  <mat-form-field appearance="fill">
+  <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Team</mat-label>
     <mat-select formControlName="team">
       <mat-option *ngFor="let team of teams" [value]="team">
@@ -9,18 +7,4 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-
-  <!--
-  <mat-card>
-    <mat-card-title>V.K. Linden</mat-card-title>
-    <mat-card-content>
-      <p>Beschikbare ploegen</p>
-
-      <mat-nav-list>
-        <ng-container *ngFor="let team of teams">
-          <a mat-list-item href="/calendar/{{team.team_id}}">{{ team.name }} </a>
-        </ng-container>
-      </mat-nav-list>
-    </mat-card-content>
-  </mat-card>-->
 </form>

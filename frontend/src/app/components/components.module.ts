@@ -6,6 +6,8 @@ import {TeamsComponent} from "./teams/teams.component";
 import {HomeComponent} from "./home/home.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 import {LoaderComponent} from "./loader/loader.component";
+import { OpenCalendarComponent } from './open-calendar/open-calendar.component';
+import {RouterModule} from "@angular/router";
 
 
 @NgModule({
@@ -14,11 +16,13 @@ import {LoaderComponent} from "./loader/loader.component";
     PageNotFoundComponent,
     ClubsComponent,
     TeamsComponent,
-    LoaderComponent
+    LoaderComponent,
+    OpenCalendarComponent
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    RouterModule
   ],
   exports: [
     HomeComponent,
