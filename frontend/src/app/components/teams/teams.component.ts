@@ -4,6 +4,8 @@ import { Inject } from '@angular/core';
 import { RbfaService } from '../../services/rbfa.service';
 import { Team } from '../../models/team';
 import { ClubTeams } from '../../models/clubteams';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {isObjectValidator} from "../../is-object.validator";
 
 @Component({
   selector: 'app-teams',
@@ -12,14 +14,18 @@ import { ClubTeams } from '../../models/clubteams';
   providers: [ RbfaService ]
 })
 export class TeamsComponent implements OnInit {
-  
+
+  form = new FormGroup({
+    team: new FormControl('', [Validators.required, isObjectValidator() ]),
+  });
+
   constructor(
-    @Inject('IRbfaService') private rbfaService: RbfaService, 
+    @Inject('IRbfaService') private rbfaService: RbfaService,
     private route: ActivatedRoute
   ) {}
 
   teams: Team[] = [];
-  
+
   ngOnInit(): void {
 
     const routeParams = this.route.snapshot.paramMap;
