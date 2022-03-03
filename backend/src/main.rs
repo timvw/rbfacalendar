@@ -29,9 +29,8 @@ async fn main() {
         .init();
 
     rocket::build()
-        .mount("/", routes![calendar_for_team_id])
         .mount("/", FileServer::from(relative!("../frontend/dist/frontend")))
-        .mount("/api", routes![get_club_teams, search_clubs])
+        .mount("/api", routes![get_club_teams, search_clubs, calendar_for_team_id])
         .launch()
         .await;
 }
