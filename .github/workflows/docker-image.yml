@@ -35,4 +35,18 @@ jobs:
         push: true
         file: ./deployment/Dockerfile
         tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}      
+        labels: ${{ steps.meta.outputs.labels }}
+
+    - name: Login to registry.apps.timvw.be
+      uses: docker/login-action@v1
+      with:
+        registry: registry.apps.timvw.be
+        username: ${{ secrets.REGISTRY_GH_USER }}
+        password: ${{ secrets.REGISTRY_GH_PASS }}
+
+    - name: Push Image to multiple registries
+      uses: akhilerm/tag-push-action@v2.0.0
+      with:
+        src: docker.io/timvw/rbfacalendar:main
+        dst: |
+          registry.apps.timvw.be/rbfacalendar:latest
