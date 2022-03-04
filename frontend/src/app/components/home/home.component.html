@@ -7,12 +7,12 @@
         <button mat-button matStepperNext [disabled]="!c.form.valid">Volgende</button>
       </mat-step>
       <mat-step label="Kies team" [stepControl]="t.form">
-        <app-teams #t [teams]="teams"></app-teams>
+        <app-teams #t [club]="club" [teams]="teams"></app-teams>
         <button mat-button matStepperPrevious>Vorige</button>
         <button mat-button matStepperNext [disabled]="!t.form.valid">Volgende</button>
       </mat-step>
       <mat-step label="Open kalender">
-        <app-open-calendar #o [team_id]="team_id"></app-open-calendar>
+        <app-open-calendar #o [club]="club" [team]="team"></app-open-calendar>
         <button mat-button matStepperPrevious>Vorige</button>
       </mat-step>
     </mat-stepper>

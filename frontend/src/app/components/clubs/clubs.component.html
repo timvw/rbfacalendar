@@ -4,7 +4,7 @@
            aria-label="State"
            [matAutocomplete]="auto"
            formControlName="club"
-           placeholder="Type minstens 2 characters">
+           placeholder="Type minstens 2 characters (niet v.k., k.v., s.k., f.c., ...">
     <mat-autocomplete #auto="matAutocomplete" [panelWidth]="300" [displayWith]="displayFn">
       <ng-container>
           <mat-option *ngFor="let club of clubs | async" [value]="club">

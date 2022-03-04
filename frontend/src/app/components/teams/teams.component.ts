@@ -6,6 +6,7 @@ import { Team } from '../../models/team';
 import { ClubTeams } from '../../models/clubteams';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {isObjectValidator} from "../../is-object.validator";
+import {Club} from "../../models/club";
 
 @Component({
   selector: 'app-teams',
@@ -19,6 +20,7 @@ export class TeamsComponent implements OnInit {
     team: new FormControl('', [Validators.required, isObjectValidator() ]),
   });
 
+  @Input() club!: Club;
   @Input() teams: Team[] = [];
 
   constructor(
@@ -39,36 +41,5 @@ export class TeamsComponent implements OnInit {
   }
 
   assignData() {
-
-    /*
-    if(this.dwhPuddleTemplate != null) {
-      let data = this.dwhPuddleTemplate;
-
-      this.piiTypes = data.lookupData.piiTypes.items;
-      this.dataTypes = data.lookupData.dataTypes.items;
-      this.gdprTypes = data.lookupData.gdprTypes.items;
-
-      this.form.controls['table'].setValue(data.table);
-
-      this.fields.clear();
-      for (let field of data.fields) {
-        let fieldForm = this._formBuilder.group({
-          sourceName: this._formBuilder.control(field.sourceName),
-          sourceDataType: this._formBuilder.control(field.sourceDataType),
-          sourceNullable: this._formBuilder.control(field.sourceNullable),
-          name: this._formBuilder.control(field.name),
-          dataType: this._formBuilder.control(field.dataType, Validators.required),
-          nullable: this._formBuilder.control(field.nullable, Validators.required),
-          piiType: this._formBuilder.control(field.piiType),
-        });
-        this.fields.push(fieldForm);
-      }
-
-      this.form.controls['fileName'].setValue(data.fileName);
-      this.form.controls['className'].setValue(data.className);
-      this.form.controls['gdprTypes'].setValue(data.gdprTypes);
-    }
-
-     */
   }
 }
