@@ -2,6 +2,7 @@ use crate::rbfa::MatchDetail;
 use chrono::{Utc, NaiveDateTime};
 use ics::properties::{Description, DtEnd, DtStart, Summary};
 use ics::{escape_text, Event, ICalendar};
+use ics::components::Property;
 
 fn format_as_dtstamp(dt: NaiveDateTime) -> String {
     dt.format("%Y%m%dT%H%M%S").to_string()
@@ -22,8 +23,9 @@ fn make_match_detail_event(match_detail: &MatchDetail) -> Event<'_> {
     event
 }
 
-pub fn make_calendar_from_rbfa_match_details(match_details: &Vec<MatchDetail>) -> ICalendar {
+pub fn make_calendar_from_rbfa_match_details(title: String, match_details: &Vec<MatchDetail>) -> ICalendar {
     let mut calendar = ICalendar::new("2.0", "-//xyz Corp//NONSGML PDA Calendar Version 1.0//EN");
+    calendar.push(Property::new("X-WR-CALNAME", title));
     for match_detail in match_details {
         calendar.add_event(make_match_detail_event(&match_detail));
     }
