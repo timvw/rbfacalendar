@@ -1,18 +1,10 @@
 <img class="example-option-img" aria-hidden [src]="club.logo" height="25">
 <span>{{club.name}}</span>
 <form>
-  <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Kalender titel</mat-label>
-    <input matInput placeholder="{{title}}" value="{{title}}">
-  </mat-form-field>
-
   <div class="example-full-width" appearance="fill">
-        <a [href]="calendar_url" target="_blank" rel="noopener">
-            <button mat-icon-button color="primary">
-                <mat-icon>edit_calendar</mat-icon>
-              Open kalender
-            </button>
-
+        <a mat-icon-button [href]="calendarUrl" target="_blank">
+          <mat-icon>edit_calendar</mat-icon>
+          Open kalender
         </a>
     </div>
 </form>
