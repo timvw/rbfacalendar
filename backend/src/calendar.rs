@@ -15,7 +15,7 @@ fn can_format_as_dtstamp() {
 }
 
 fn make_match_detail_event(match_detail: &MatchDetail) -> Event<'_> {
-    let mut event = Event::new(&match_detail.id, format_as_dtstamp(Utc::now().naive_utc()));
+    let mut event = Event::new(&match_detail.id, format!("{}Z", format_as_dtstamp(Utc::now().naive_utc())));
     event.push(DtStart::new(format_as_dtstamp(match_detail.start_date)));
     event.push(DtEnd::new(format_as_dtstamp(match_detail.start_date + chrono::Duration::hours(2))));
     event.push(Summary::new(escape_text(format!("{} - {}", match_detail.home_team.name, match_detail.away_team.name))));
