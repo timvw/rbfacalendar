@@ -1,6 +1,6 @@
 use crate::rbfa::MatchDetail;
 use chrono::{Utc, NaiveDateTime};
-use ics::properties::{Description, DtEnd, DtStart, Summary};
+use ics::properties::{Description, DtEnd, DtStart, Name, Summary, TzID};
 use ics::{escape_text, Event, ICalendar};
 use ics::components::Property;
 
@@ -24,8 +24,20 @@ fn make_match_detail_event(match_detail: &MatchDetail) -> Event<'_> {
 }
 
 pub fn make_calendar_from_rbfa_match_details(title: String, match_details: &Vec<MatchDetail>) -> ICalendar {
-    let mut calendar = ICalendar::new("2.0", "-//xyz Corp//NONSGML PDA Calendar Version 1.0//EN");
+    let mut calendar = ICalendar::new("2.0", "-//timvw.be//RBFACALENDAR//EN");
+
+    let timezone = "Europe/Brussels";
+    calendar.push(TzID::new(timezone));
+    calendar.push(Property::new("TIMEZONE-ID", timezone));
+    calendar.push(Property::new("X-WR-TIMEZONE", timezone));
+
+    calendar.push(Name::new(title.clone()));
     calendar.push(Property::new("X-WR-CALNAME", title));
+
+    let description = "Alle wedstrijden volgens RBFA";
+    calendar.push(Description::new(description));
+    calendar.push(Property::new("X-WR-CALDESC", description));
+
     for match_detail in match_details {
         calendar.add_event(make_match_detail_event(&match_detail));
     }
@@ -61,7 +73,7 @@ fn can_make_calendar_from_rbfa_match_details() {
         },
     ];
 
-    let calendar = make_calendar_from_rbfa_match_details(&match_details);
+    let calendar = make_calendar_from_rbfa_match_details("test".to_string(), &match_details);
     calendar.save_file("/tmp/test.ics").expect("failed to save calendar to /tmp/test.ics");
     use std::process::Command;
     Command::new("open").arg("/tmp/test.ics").spawn().expect("failed to open /tmp/test.ics");
