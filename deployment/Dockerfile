@@ -1,4 +1,4 @@
-FROM rust:1.57 as build
+FROM rust:1.60 as build
 
 WORKDIR /opt/app
 
@@ -19,7 +19,7 @@ COPY ./backend/src ./src
 # build for release
 RUN cargo build --release
 
-FROM node:17.3.0 as webappbuild
+FROM node:18.1.0 as webappbuild
 
 WORKDIR /opt/app
 COPY ./frontend ./frontend
