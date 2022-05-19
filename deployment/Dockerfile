@@ -19,7 +19,7 @@ COPY ./backend/src ./src
 # build for release
 RUN cargo build --release
 
-FROM node:18.1.0 as webappbuild
+FROM node:18.2.0 as webappbuild
 
 WORKDIR /opt/app
 COPY ./frontend ./frontend
