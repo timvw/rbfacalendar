@@ -14,23 +14,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Log in to Docker Hub
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Login to registry.apps.timvw.be
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with:
         registry: registry.apps.timvw.be
         username: ${{ secrets.REGISTRY_GH_USER }}
         password: ${{ secrets.REGISTRY_GH_PASS }}
 
     - name: Build and push Docker image
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v6
       with:
         context: .
         push: true
